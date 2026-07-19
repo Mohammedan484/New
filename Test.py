@@ -35,4 +35,4 @@ def validate_get_started_button():
         browser.close()
 
 if __name__ == "__main__":
-    validate_get_started_button()    validate_get_started_button()
+    validate_get_started_button()
