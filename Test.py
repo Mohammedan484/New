@@ -1,4 +1,5 @@
- from playwright.sync_api import sync_playwright
+
+from playwright.sync_api import sync_playwright
 
 def validate_get_started_button():
     print("Starting browser...")
@@ -8,7 +9,7 @@ def validate_get_started_button():
         page = browser.new_page()
         
         print("Navigating to Playwright website...")
-        page.goto("https://www.1024terabox.com/wap/referral/4401884469720?abGroup=1&cardType=drainage", wait_until="domcontentloaded")
+        page.goto("https://playwright.dev/", wait_until="domcontentloaded")
         
         try:
             # Give the page a brief moment to render
@@ -34,4 +35,4 @@ def validate_get_started_button():
         browser.close()
 
 if __name__ == "__main__":
-    validate_get_started_button()
+    validate_get_started_button()    validate_get_started_button()
