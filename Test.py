@@ -3,8 +3,9 @@ from playwright.sync_api import sync_playwright
 def combined_automation_flow():
     print("Starting browser...")
     with sync_playwright() as p:
+        # Added a standard desktop viewport so the website loads the desktop layout
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
+        page = browser.new_page(viewport={"width": 1280, "height": 720})
 
         # ==========================================
         # PART 1: Click the "Get started" button
@@ -13,18 +14,14 @@ def combined_automation_flow():
         page.goto("https://www.1024terabox.com/wap/referral/4401884469720?abGroup=1&cardType=drainage", wait_until="domcontentloaded")
         
         try:
-            page.wait_for_timeout(1000)
             print("Looking for 'Get started' link...")
-            get_started_link = page.locator('a:has-text("Get Started")').first
-            get_started_link.wait_for(state="visible", timeout=30000)
+            get_started_link = page.locator('a:has-text("Get started")').first
             
-            if get_started_link.is_visible():
-                print("✅ Validation Successful: 'Get started' link found. Clicking it now...")
-                # Click the button to proceed
-                get_started_link.click()
-                page.wait_for_timeout(2000) # Wait for the next page to load
-            else:
-                print("❌ Validation Failed: Link is present but not visible.")
+            # Playwright's .click() automatically waits for the element to be visible and clickable!
+            print("Clicking the link...")
+            get_started_link.click(timeout=20000)
+            
+            print("✅ Part 1 Successful: Clicked 'Get started' and moved to the next page!")
                 
         except Exception as e:
             print(f"❌ Failed during Part 1: {e}")
@@ -36,37 +33,31 @@ def combined_automation_flow():
         print("\n--- Starting Login Flow Simulation ---")
         
         # NOTE: Replace this URL with your actual target login URL
-        page.goto("https://www.1024terabox.com/wap/referral/4401884469720?abGroup=1&cardType=drainage", wait_until="domcontentloaded")
+       # page.goto("https://example.com/login", wait_until="domcontentloaded")
 
         try:
             # 1. Click the mail image/icon
-            # NOTE: Replace 'img[alt="email-icon"]' with the actual CSS selector of the image
             print("Looking for mail image to click...")
             mail_icon = page.locator('img[alt="email-icon"]')
-            mail_icon.wait_for(state="visible", timeout=5000)
-            mail_icon.click()
+            # Click automatically waits up to 5 seconds (default) or specified timeout
+            mail_icon.click(timeout=5000)
             
-            # 2. Wait for the email input field to appear
-            # NOTE: Replace 'input[type="email"]' with the actual CSS selector of the input box
+            # 2. Fill the email input field
             print("Looking for email input field...")
             email_input = page.locator('input[type="email"]')
-            email_input.wait_for(state="visible", timeout=5000)
-            
-            # 3. Enter the email address
-            print("Entering email address...")
+            # Fill also automatically waits for the input to be ready
             email_input.fill("hussain.17eee.rymec@gmail.com")
             
-            # 4. Click the "Continue" button
-            # NOTE: Replace the text "Continue" if the button says something else
+            # 3. Click the "Continue" button
             print("Looking for 'Continue' button...")
             continue_button = page.locator('button:has-text("Continue")')
-            continue_button.click()
+            continue_button.click(timeout=5000)
             
             print("✅ Login flow actions completed successfully.")
             
         except Exception as e:
             print(f"❌ Login flow failed. Error: {e}")
-            print("NOTE: Part 2 will fail here until you replace the placeholder selectors with real ones from your target website.")
+            print("NOTE: Part 2 will fail here until you replace the placeholders with real ones.")
             
         browser.close()
 
