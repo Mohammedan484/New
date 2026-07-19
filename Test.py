@@ -1,25 +1,31 @@
+import re
 from playwright.sync_api import sync_playwright
 
 def combined_automation_flow():
     print("Starting browser...")
     with sync_playwright() as p:
-        # Added a standard desktop viewport so the website loads the desktop layout
+        # 1. Add a real User-Agent so the website doesn't block GitHub's bots
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page(viewport={"width": 1280, "height": 720})
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        )
+        page = context.new_page()
 
         # ==========================================
         # PART 1: Click the "Get started" button
         # ==========================================
         print("Navigating to Playwright website...")
-        page.goto("https://www.1024terabox.com/wap/referral/4401884469720?abGroup=1&cardType=drainage", wait_until="domcontentloaded")
+        page.goto("https://www.1024terabox.com/wap/referral/4401884469720?abGroup=1&cardType=drainage", wait_until="load")
         
         try:
+            print("Page title:", page.title())
             print("Looking for 'Get started' link...")
-            get_started_link = page.locator('a:has-text("Get Started")').first
             
-            # Playwright's .click() automatically waits for the element to be visible and clickable!
+            # 2. Use Regex to ignore upper/lowercase differences (re.IGNORECASE)
+            get_started_link = page.get_by_role("link", name=re.compile("get started", re.IGNORECASE)).first
+            
             print("Clicking the link...")
-            get_started_link.click(timeout=20000)
+            get_started_link.click(timeout=15000)
             
             print("✅ Part 1 Successful: Clicked 'Get started' and moved to the next page!")
                 
@@ -33,19 +39,17 @@ def combined_automation_flow():
         print("\n--- Starting Login Flow Simulation ---")
         
         # NOTE: Replace this URL with your actual target login URL
-       # page.goto("https://example.com/login", wait_until="domcontentloaded")
+        #page.goto("https://example.com/login", wait_until="load")
 
         try:
             # 1. Click the mail image/icon
             print("Looking for mail image to click...")
             mail_icon = page.locator('img[alt="email-icon"]')
-            # Click automatically waits up to 5 seconds (default) or specified timeout
             mail_icon.click(timeout=5000)
             
             # 2. Fill the email input field
             print("Looking for email input field...")
             email_input = page.locator('input[type="email"]')
-            # Fill also automatically waits for the input to be ready
             email_input.fill("hussain.17eee.rymec@gmail.com")
             
             # 3. Click the "Continue" button
