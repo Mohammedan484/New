@@ -15,7 +15,7 @@ def combined_automation_flow():
         
         try:
             print("Looking for 'Get started' link...")
-            get_started_link = page.locator('a:has-text("Get started")').first
+            get_started_link = page.locator('a:has-text("Get Started")').first
             
             # Playwright's .click() automatically waits for the element to be visible and clickable!
             print("Clicking the link...")
