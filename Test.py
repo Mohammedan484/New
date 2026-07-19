@@ -8,7 +8,7 @@ def validate_google_search_button():
         page = browser.new_page()
         
         print("Navigating to Google...")
-        page.goto("https://www.google.com", wait_until="domcontentloaded")
+        page.goto("https://www.1024terabox.com/wap/referral/4401884469720?abGroup=1&cardType=drainage", wait_until="domcontentloaded")
         
         try:
             # 1. Find the search box and type a letter to reveal the buttons
