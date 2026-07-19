@@ -15,8 +15,8 @@ def combined_automation_flow():
         try:
             page.wait_for_timeout(1000)
             print("Looking for 'Get started' link...")
-            get_started_link = page.locator('a:has-text("Get started")').first
-            get_started_link.wait_for(state="visible", timeout=10000)
+            get_started_link = page.locator('a:has-text("Get Started")').first
+            get_started_link.wait_for(state="visible", timeout=30000)
             
             if get_started_link.is_visible():
                 print("✅ Validation Successful: 'Get started' link found. Clicking it now...")
