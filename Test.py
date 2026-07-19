@@ -14,7 +14,7 @@ def validate_get_started_button():
         try:
             # 1. Find the "Get started" link by its exact text
             print("Looking for 'Get started' link...")
-            get_started_link = page.get_by_role("link", name="Get started")
+            get_started_link = page.get_by_role("link", name="Get Started")
             
             # 2. Wait for it to be visible on the screen
             get_started_link.wait_for(state="visible", timeout=10000)
